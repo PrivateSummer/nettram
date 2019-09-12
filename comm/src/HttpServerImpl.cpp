@@ -5,6 +5,7 @@
 #include "CTime.h"
 #include "ServerException.h"
 #include "ServerConfig.h"
+#include "SessionSystem.h"
 
 using namespace nt;
 
