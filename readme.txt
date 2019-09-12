@@ -2,7 +2,6 @@
 
 #build libevent
 
-cd ntlib
 tar -zxvf libevent-1.4.13-stable.tar.gz
 cd libevent-1.4.13-stable
 ./configure
