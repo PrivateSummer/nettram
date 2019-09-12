@@ -80,13 +80,13 @@ int HttpServer::init()
 	return 0;
 }
 
-void HttpServer::stop()
+void HttpServer::Stop()
 {
     m_exit = true;
 }
 
 //设置配置数据
-void HttpServer::do_http_options_work(HttpOptionType type, const void *value)
+void HttpServer::DoHttpOptionsWork(HttpOptionType type, const void *value)
 {
 	switch(type)
 	{
@@ -141,25 +141,25 @@ void HttpServer::do_http_options_work(HttpOptionType type, const void *value)
 }
 
 // 出错信息处理
-void HttpServer::error_die(const char* sc)
+void HttpServer::ErrorDie(const char* sc)
 {
 	std::string err = std::string(sc) + ": " + std::string(strerror(errno));
 	throw ServerException(err);
 }
 
-int HttpServer::startup(unsigned short port)
+int HttpServer::Startup(unsigned short port)
 {
     int httpd = 0;
     struct sockaddr_in name;
 
     httpd = socket(PF_INET, SOCK_STREAM, 0);
     if (httpd == -1)
-        error_die("socket");
+        ErrorDie("socket");
 	
 	int opt = 1;
 	if (setsockopt(httpd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) == -1)
 	{
-        error_die("setsockopt");
+        ErrorDie("setsockopt");
 	}
 	
     memset(&name, 0, sizeof(name));
@@ -167,23 +167,23 @@ int HttpServer::startup(unsigned short port)
     name.sin_port = htons(port);
     name.sin_addr.s_addr = htonl(INADDR_ANY);
     if (bind(httpd, (struct sockaddr *)&name, sizeof(name)) < 0)
-        error_die("bind");
+        ErrorDie("bind");
 
     if (listen(httpd, m_max_listen_size) < 0)
-        error_die("listen");
+        ErrorDie("listen");
 
     return(httpd);
 }
 
-void HttpServer::close_socket(int socket)
+void HttpServer::CloseSocket(int socket)
 {
 	info_log("close client{%d}\n", socket);
 	close(socket);
 }
 
-int HttpServer::handle_request(nt::SharedHttpInput_t &request, nt::SharedHttpOutput_t &response)
+int HttpServer::HandleRequest(nt::SharedHttpInput_t &request, nt::SharedHttpOutput_t &response)
 {
-	if( ! has_url(request->GetRequestURI()))
+	if( ! HasUrl(request->GetRequestURI()))
 	{
 		response->GetOutputImpl()->append("not found");
 		response->SetHeader("Connection", "close");
@@ -246,10 +246,10 @@ int HttpServer::handle_request(nt::SharedHttpInput_t &request, nt::SharedHttpOut
 	return H_NONE;
 }
 
-void HttpServer::accept_request(int client, nt::SharedHttpInput_t request)
+void HttpServer::AcceptRequest(int client, nt::SharedHttpInput_t request)
 {
-    //在函数退出时自动执行 this->close_exit(client);
-    ScopedDestructor<HttpServer, int> clientShutter(&HttpServer::close_socket, this, client);
+    //在函数退出时自动执行 this->CloseSocket(client);
+    ScopedDestructor<HttpServer, int> clientShutter(&HttpServer::CloseSocket, this, client);
 
 	CTime ctime;
 
@@ -278,7 +278,7 @@ void HttpServer::accept_request(int client, nt::SharedHttpInput_t request)
 	}
 	else
 	{
-		ret = handle_request(request, response);
+		ret = HandleRequest(request, response);
 		if(ret == H_WEBSOCKET)
 		{
 			int ret = m_webSocket.AddConnection(request, client);
@@ -317,7 +317,7 @@ void HttpServer::accept_request(int client, nt::SharedHttpInput_t request)
 	info_log("client ip:%s, uri:%s, runtime:%d ms", request->GetRemoteAddr().c_str(), request->GetRequestURI().c_str(), ctime.getFuncRunTime());
 }
 
-void HttpServer::dowork()
+void HttpServer::DoWork()
 {
     while(1)
     {
@@ -327,11 +327,11 @@ void HttpServer::dowork()
         try
         {
             //建立tcp服务
-            m_server_socket = startup((unsigned short)m_conf.m_port);
+            m_server_socket = Startup((unsigned short)m_conf.m_port);
 			printf("port:%d\n", m_conf.m_port);
             info_log("httpd running on port %d, socket %d\n", m_conf.m_port, m_server_socket);
 
-            ScopedDestructor<HttpServer, int> socketShutter(&HttpServer::close_socket, this, m_server_socket);
+            ScopedDestructor<HttpServer, int> socketShutter(&HttpServer::CloseSocket, this, m_server_socket);
 
             while (1)
             {
@@ -345,7 +345,7 @@ void HttpServer::dowork()
                 client_sock = accept(m_server_socket,(struct sockaddr *)&client_name,(socklen_t*)&client_name_len);
                 if (client_sock == -1)
                 {
-                    error_die("accept");
+                    ErrorDie("accept");
                 }
 
                 struct timeval read_timeout={ m_read_time_out, 0};
@@ -364,8 +364,8 @@ void HttpServer::dowork()
 				}
                 if(snd_ret < 0 || rcv_ret < 0)
                 {
-                    close_socket(client_sock);
-                    error_die("setsockopt");
+                    CloseSocket(client_sock);
+                    ErrorDie("setsockopt");
                 }
 
 				nt::SharedHttpInput_t request = nt::CreateSharedHttpInput();
@@ -374,7 +374,7 @@ void HttpServer::dowork()
 				request->SetRemotePort(client_name.sin_port);
 
                 //线程池
-                m_threadPool.run(boost::bind(&HttpServer::accept_request, this, client_sock, request));
+                m_threadPool.run(boost::bind(&HttpServer::AcceptRequest, this, client_sock, request));
             }
         }
         catch(std::exception &ex)
@@ -391,7 +391,7 @@ void HttpServer::dowork()
 }
 
 
-int HttpServer::start()
+int HttpServer::Start()
 {
     try
     {
@@ -412,11 +412,11 @@ int HttpServer::start()
 
     m_exit = false;
 
-	dowork();
+	DoWork();
 	return 0;
 }
 
-void HttpServer::put_interceptor(const std::vector<std::string> &path, HandlerInterceptor *interceptor)
+void HttpServer::PutInterceptor(const std::vector<std::string> &path, HandlerInterceptor *interceptor)
 {
 	InterceptorData *data = new InterceptorData();
 
@@ -432,12 +432,12 @@ void HttpServer::put_interceptor(const std::vector<std::string> &path, HandlerIn
 	m_interceptors.push_back(data);
 }
 
-void HttpServer::add_url(const std::string &url)
+void HttpServer::AddUrl(const std::string &url)
 {
 	m_url.insert(url);
 }
 
-bool HttpServer::has_url(const std::string &url) const
+bool HttpServer::HasUrl(const std::string &url) const
 {
 	return m_url.find(url) != m_url.end();
 }

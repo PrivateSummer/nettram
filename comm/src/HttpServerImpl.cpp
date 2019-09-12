@@ -53,14 +53,14 @@ int HttpServerImpl::init()
 		}
     }
 	
-	http_options(HTTP_OPT_PORT, conf.m_port);
-	http_options(HTTP_OPT_BUFF_SIZE, conf.m_buf_size);
-	http_options(HTTP_OPT_LISTENQ, conf.m_listenq);
-	http_options(HTTP_OPT_QUEUE_SIZE, conf.m_queue_size);
-	http_options(HTTP_OPT_PROC_SIZE, conf.m_proc_size);
-	http_options(HTTP_OPT_MAX_DATA_LEN, conf.m_max_data_len);
-	http_options(HTTP_OPT_READ_TIMEOUT, conf.m_read_timeout);
-	http_options(HTTP_OPT_WRITE_TIMEOUT, conf.m_write_timeout);
+	HttpOptions(HTTP_OPT_PORT, conf.m_port);
+	HttpOptions(HTTP_OPT_BUFF_SIZE, conf.m_buf_size);
+	HttpOptions(HTTP_OPT_LISTENQ, conf.m_listenq);
+	HttpOptions(HTTP_OPT_QUEUE_SIZE, conf.m_queue_size);
+	HttpOptions(HTTP_OPT_PROC_SIZE, conf.m_proc_size);
+	HttpOptions(HTTP_OPT_MAX_DATA_LEN, conf.m_max_data_len);
+	HttpOptions(HTTP_OPT_READ_TIMEOUT, conf.m_read_timeout);
+	HttpOptions(HTTP_OPT_WRITE_TIMEOUT, conf.m_write_timeout);
 
 	SessionSystem::Instance();
 	
@@ -74,7 +74,7 @@ int HttpServerImpl::init()
 			err_log("Can't resolve interceptor (%s)", interceptors[i].interceptor.c_str());
 			return -2;
 		}
-	    put_interceptor(interceptors[i].path, interceptor);
+	    PutInterceptor(interceptors[i].path, interceptor);
 	}
 
 	info_log("server init in %d ms", ctime.getFuncRunTime());
@@ -141,7 +141,7 @@ int HttpServerImpl::AddServiceFactory(nt::ServiceFactory* factory)
 	}
 	m_service_mapper.insert(std::make_pair(url, factory));
 	
-	add_url(url);
+	AddUrl(url);
 	
 	printf("AddServiceFactory cgi:%s\n", url.c_str());
 	return 0;

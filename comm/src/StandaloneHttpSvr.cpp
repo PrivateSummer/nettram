@@ -72,7 +72,7 @@ int StandaloneHttpSvr::OpenLog(const char *properties, int level)
 
 void StandaloneHttpSvr::Start(int argc, char **argv)
 {
-    int ret = pServerImpl->start();
+    int ret = pServerImpl->Start();
     if(ret != 0)
 	{
 		fatal_log("server start failed:%d. exit\n", ret);

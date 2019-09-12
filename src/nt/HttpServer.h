@@ -27,6 +27,8 @@ namespace nt
 		HTTP_OPT_WRITE_TIMEOUT = 9,
 	};
 	
+	class HttpServerInternal;
+	
 	struct InterceptorData;
 	
 	class HttpServer
@@ -35,36 +37,36 @@ namespace nt
 		HttpServer();
 		virtual ~HttpServer();
 
-		void stop();
-		int start();
+		void Stop();
+		int Start();
 		
 		virtual void service(nt::SharedHttpInput_t request, nt::SharedHttpOutput_t response) = 0;
 		
 		template<typename T>
-		void http_options(HttpOptionType type, const T &value)
+		void HttpOptions(HttpOptionType type, const T &value)
 		{
-			do_http_options_work(type, &value);
+			DoHttpOptionsWork(type, &value);
 		}
 		
-		void put_interceptor(const std::vector<std::string> &path, HandlerInterceptor *interceptor);
+		void PutInterceptor(const std::vector<std::string> &path, HandlerInterceptor *interceptor);
 		
-		void add_url(const std::string &url);
-		bool has_url(const std::string &url) const;
+		void AddUrl(const std::string &url);
+		bool HasUrl(const std::string &url) const;
 	protected:
 	    virtual int init();
 
 	private:
-		void dowork();
-		void accept_request(int client, nt::SharedHttpInput_t request_project);
-		int handle_request(nt::SharedHttpInput_t &request, nt::SharedHttpOutput_t &response);
+		void DoWork();
+		void AcceptRequest(int client, nt::SharedHttpInput_t request_project);
+		int HandleRequest(nt::SharedHttpInput_t &request, nt::SharedHttpOutput_t &response);
 		
-		int startup(unsigned short port);
+		int Startup(unsigned short port);
 
-		void close_socket(int socket);
+		void CloseSocket(int socket);
 
-		void error_die(const char* sc);
+		void ErrorDie(const char* sc);
 		
-		void do_http_options_work(HttpOptionType type, const void *value);
+		void DoHttpOptionsWork(HttpOptionType type, const void *value);
 	private:
 	    nt::HttpConfig m_conf;
 		long m_read_time_out;
