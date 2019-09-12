@@ -36,7 +36,7 @@ public:
         data_queue.push(new_value);
         data_cond.notify_one(); // 1
     }
-    void wait_and_pop(T& value) // 2
+    void wait_and_pop(T &value) // 2
     {
         boost::unique_lock<boost::mutex> lk(mut);
         data_cond.wait(lk, threadsafe_queue_wait_helper<std::queue<T> >(&data_queue));
@@ -52,7 +52,7 @@ public:
         data_queue.pop();
         return res;
     }
-    bool try_pop(T& value)
+    bool try_pop(T &value)
     {
         boost::lock_guard<boost::mutex> lk(mut);
         if(data_queue.empty())

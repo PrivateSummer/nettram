@@ -3,7 +3,7 @@
 #pragma once
 #ifdef WITH_BOOST
 #include <boost/thread/mutex.hpp>
-#else 
+#else
 #include <mutex>
 #endif
 
@@ -11,7 +11,7 @@ namespace nt
 {
 #ifdef WITH_BOOST
 using boost::mutex;
-#else 
+#else
 using std::mutex;
 #endif
 

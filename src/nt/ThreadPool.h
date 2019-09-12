@@ -19,15 +19,18 @@ public:
 #ifdef WITH_BOOST
     typedef boost::function<void()> Task;
 #else
-	typedef std::function<void()> Task;	
+    typedef std::function<void()> Task;
 #endif
     explicit ThreadPool(const std::string &name = std::string());
     ~ThreadPool();
 
     void start(int numThreads);//设置线程数，创建numThreads个线程
     void stop();//线程池结束
-    void run(const Task& f);//任务f在线程池中运行
-    void setMaxQueueSize(int maxSize) { _maxQueueSize = maxSize; }//设置任务队列可存放最大任务数
+    void run(const Task &f);//任务f在线程池中运行
+    void setMaxQueueSize(int maxSize)
+    {
+        _maxQueueSize = maxSize;    //设置任务队列可存放最大任务数
+    }
     bool isFull();//任务队列是否已满
 
 private:
@@ -38,15 +41,15 @@ private:
     boost::mutex _mutex;
     boost::condition_variable _notEmpty;
     boost::condition_variable _notFull;
-	boost::thread_group _threads;
+    boost::thread_group _threads;
 #else
-	std::mutex _mutex;
+    std::mutex _mutex;
     std::condition_variable _notEmpty;
     std::condition_variable _notFull;
-	std::vector<std::thread> _threads;	
+    std::vector<std::thread> _threads;
 #endif
     std::string _name;
     std::deque<Task> _queue;
     size_t _maxQueueSize;
-	volatile bool _running;
+    volatile bool _running;
 };

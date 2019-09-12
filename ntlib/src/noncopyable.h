@@ -6,11 +6,11 @@ namespace nt
 class noncopyable
 {
 public:
-    noncopyable(){}
-    ~noncopyable(){}
+    noncopyable() {}
+    ~noncopyable() {}
 private:
     noncopyable(const noncopyable &);
-    noncopyable & operator=(const noncopyable &);
+    noncopyable &operator=(const noncopyable &);
 };
 
 }

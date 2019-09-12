@@ -1,6 +1,6 @@
 #ifdef WITH_BOOST
 #include <boost/unordered_map.hpp>
-#else 
+#else
 #include <unordered_map>
 #endif
 
@@ -8,7 +8,7 @@ namespace nt
 {
 #ifdef WITH_BOOST
 using boost::unordered_map;
-#else 
+#else
 using std::unordered_map;
 #endif
 

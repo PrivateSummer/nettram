@@ -10,8 +10,8 @@ class ServiceFactory
 public:
     virtual LogicService *Create() = 0;
     virtual const char *Name() = 0;
-    
-    virtual ~ServiceFactory(){};
+
+    virtual ~ServiceFactory() {};
 };
 
 }

@@ -1,8 +1,8 @@
 #pragma once
 
-namespace nt 
+namespace nt
 {
 
-unsigned int hash(const unsigned char *key, int len);	
+unsigned int hash(const unsigned char *key, int len);
 
 }

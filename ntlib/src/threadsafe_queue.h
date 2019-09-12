@@ -24,9 +24,9 @@ public:
     template<typename T1>
     class threadsafe_queue_wait_helper
     {
-        T1* data_queue;
+        T1 *data_queue;
     public:
-        threadsafe_queue_wait_helper(T1* queue) : data_queue(queue)
+        threadsafe_queue_wait_helper(T1 *queue) : data_queue(queue)
         {}
         bool operator()()
         {
@@ -40,7 +40,7 @@ public:
         data_queue.push(new_value);
         data_cond.notify_one(); // 1
     }
-    void wait_and_pop(T& value) // 2
+    void wait_and_pop(T &value) // 2
     {
         std::unique_lock<std::mutex> lk(mut);
         data_cond.wait(lk, threadsafe_queue_wait_helper<std::queue<T> >(&data_queue));
@@ -56,7 +56,7 @@ public:
         data_queue.pop();
         return res;
     }
-    bool try_pop(T& value)
+    bool try_pop(T &value)
     {
         std::lock_guard<std::mutex> lk(mut);
         if(data_queue.empty())

@@ -3,7 +3,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/weak_ptr.hpp>
-#else 
+#else
 #include <memory>
 #endif
 
@@ -11,7 +11,7 @@ namespace nt
 {
 #ifdef WITH_BOOST
 using boost::make_shared;
-#else 
+#else
 using std::make_shared;
 #endif
 

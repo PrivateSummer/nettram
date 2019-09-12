@@ -2,7 +2,7 @@
 
 #ifdef WITH_BOOST
 #include <boost/thread/thread.hpp>
-#else 
+#else
 #include <thread>
 #endif
 
@@ -10,7 +10,7 @@ namespace nt
 {
 #ifdef WITH_BOOST
 using boost::thread;
-#else 
+#else
 using std::thread;
 #endif
 

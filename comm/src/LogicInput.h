@@ -11,198 +11,198 @@ namespace nt
 class LogicInput
 {
 public:
-	LogicInput()
-	{
-		m_contentLength = 0;
-		m_remotePort = 0;
-	    m_keepAlive = 0;
-		m_code = 200;
-		m_version = "1.0";
-	}
-    virtual ~LogicInput(){};
+    LogicInput()
+    {
+        m_contentLength = 0;
+        m_remotePort = 0;
+        m_keepAlive = 0;
+        m_code = 200;
+        m_version = "1.0";
+    }
+    virtual ~LogicInput() {};
 
 
-	struct header
-	{
-		std::string key;
-		std::string value;
-	};
+    struct header
+    {
+        std::string key;
+        std::string value;
+    };
 
-	template<typename T>
-	void SetHeader(const std::string& key, const T& value)
-	{
-		std::stringstream ss;
-		ss << value;
-		header h = { key, ss.str() };
+    template<typename T>
+    void SetHeader(const std::string &key, const T &value)
+    {
+        std::stringstream ss;
+        ss << value;
+        header h = { key, ss.str() };
 
-		m_headers.push_back(h);
-	}
-	
-	const std::string * GetHeader(const std::string& key) const
-	{
-		for (size_t i = 0; i < m_headers.size(); i++)
-		{
-			if (strcasecmp(m_headers[i].key.c_str(), key.c_str()) == 0)
-			{
-				return &m_headers[i].value;
-			}
-		}
-		return NULL;
-	}
+        m_headers.push_back(h);
+    }
 
-	const std::vector<LogicInput::header>& GetHeaders() const
-	{
-		return m_headers;
-	}
+    const std::string *GetHeader(const std::string &key) const
+    {
+        for (size_t i = 0; i < m_headers.size(); i++)
+        {
+            if (strcasecmp(m_headers[i].key.c_str(), key.c_str()) == 0)
+            {
+                return &m_headers[i].value;
+            }
+        }
+        return NULL;
+    }
 
-	std::vector<LogicInput::header>& Headers()
-	{
-		return m_headers;
-	}
+    const std::vector<LogicInput::header> &GetHeaders() const
+    {
+        return m_headers;
+    }
 
-	void ClearHeaders()
-	{
-		m_headers.clear();
-	}
+    std::vector<LogicInput::header> &Headers()
+    {
+        return m_headers;
+    }
 
-	void SetMethod(const std::string& method)
-	{
-		m_method = method;
-	}
+    void ClearHeaders()
+    {
+        m_headers.clear();
+    }
 
-	const std::string& GetMethod() const
-	{
-		return m_method;
-	}
+    void SetMethod(const std::string &method)
+    {
+        m_method = method;
+    }
 
-	std::string& Method()
-	{
-		return m_method;
-	}
+    const std::string &GetMethod() const
+    {
+        return m_method;
+    }
 
-	void SetRequestURI(const std::string &uri)
-	{
-		m_requestURI = uri;
-	}
+    std::string &Method()
+    {
+        return m_method;
+    }
 
-	const std::string& GetRequestURI() const
-	{
-		return m_requestURI;
-	}
+    void SetRequestURI(const std::string &uri)
+    {
+        m_requestURI = uri;
+    }
 
-	std::string& RequestURI()
-	{
-		return m_requestURI;
-	}
+    const std::string &GetRequestURI() const
+    {
+        return m_requestURI;
+    }
 
-	void SetInput(const std::string& input)
-	{
-		m_input = input;
-	}
+    std::string &RequestURI()
+    {
+        return m_requestURI;
+    }
 
-	const std::string & GetInput() const
-	{
-		return m_input;
-	}
+    void SetInput(const std::string &input)
+    {
+        m_input = input;
+    }
 
-	std::string * GetInputImpl()
-	{
-		return &m_input;
-	}
+    const std::string &GetInput() const
+    {
+        return m_input;
+    }
 
-	void SetRemoteAddr(const std::string& addr)
-	{
-		m_remoteAddr = addr;
-	}
+    std::string *GetInputImpl()
+    {
+        return &m_input;
+    }
 
-	const std::string& GetRemoteAddr() const
-	{
-		return m_remoteAddr;
-	}
+    void SetRemoteAddr(const std::string &addr)
+    {
+        m_remoteAddr = addr;
+    }
 
-	void SetQueryString(const std::string& queryString)
-	{
-		m_queryString = queryString;
-	}
+    const std::string &GetRemoteAddr() const
+    {
+        return m_remoteAddr;
+    }
 
-	const std::string& GetQueryString() const
-	{
-		return m_queryString;
-	}
+    void SetQueryString(const std::string &queryString)
+    {
+        m_queryString = queryString;
+    }
 
-	std::string& QueryString()
-	{
-		return m_queryString;
-	}
+    const std::string &GetQueryString() const
+    {
+        return m_queryString;
+    }
 
-	void SetRemotePort(int remotePort)
-	{
-		m_remotePort = remotePort;
-	}
+    std::string &QueryString()
+    {
+        return m_queryString;
+    }
 
-	int GetRemotePort() const
-	{
-		return m_remotePort;
-	}
+    void SetRemotePort(int remotePort)
+    {
+        m_remotePort = remotePort;
+    }
 
-	void SetKeepAlive(int keepAlive)
-	{
-		m_keepAlive = keepAlive;
-	}
+    int GetRemotePort() const
+    {
+        return m_remotePort;
+    }
 
-	int GetKeepAlive() const
-	{
-		return m_keepAlive;
-	}
+    void SetKeepAlive(int keepAlive)
+    {
+        m_keepAlive = keepAlive;
+    }
 
-	void SetContentLength(int contentLength)
-	{
-		m_contentLength = contentLength;
-	}
+    int GetKeepAlive() const
+    {
+        return m_keepAlive;
+    }
 
-	int GetContentLength() const
-	{
-		return m_contentLength;
-	}
+    void SetContentLength(int contentLength)
+    {
+        m_contentLength = contentLength;
+    }
 
-	void SetCode(int code)
-	{
-		m_code = code;
-	}
+    int GetContentLength() const
+    {
+        return m_contentLength;
+    }
 
-	int GetCode() const
-	{
-		return m_code;
-	}
-	
-	void SetVersion(const std::string& version)
-	{
-		m_version = version;
-	}
-	
-	std::string GetVersion() const
-	{
-		return m_version;
-	}
+    void SetCode(int code)
+    {
+        m_code = code;
+    }
+
+    int GetCode() const
+    {
+        return m_code;
+    }
+
+    void SetVersion(const std::string &version)
+    {
+        m_version = version;
+    }
+
+    std::string GetVersion() const
+    {
+        return m_version;
+    }
 private:
-	std::vector<LogicInput::header> m_headers;
-	int m_contentLength;
-	std::string m_requestURI;
-	std::string m_input;
-	std::string m_remoteAddr;
-	int m_remotePort;
-	std::string m_queryString;
-	std::string m_method;
-	int m_keepAlive;
-	int m_code;
-	std::string m_version;
+    std::vector<LogicInput::header> m_headers;
+    int m_contentLength;
+    std::string m_requestURI;
+    std::string m_input;
+    std::string m_remoteAddr;
+    int m_remotePort;
+    std::string m_queryString;
+    std::string m_method;
+    int m_keepAlive;
+    int m_code;
+    std::string m_version;
 };
 
 #ifdef WITH_BOOST
 typedef boost::shared_ptr<nt::LogicInput> SharedLogicInput_t;
-#else 
+#else
 typedef std::shared_ptr<nt::LogicInput> SharedLogicInput_t;
 #endif
-#define CreateSharedLogicInput() make_shared<nt::LogicInput>(); 
+#define CreateSharedLogicInput() make_shared<nt::LogicInput>();
 
 }

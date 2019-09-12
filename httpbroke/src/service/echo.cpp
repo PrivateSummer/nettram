@@ -9,11 +9,11 @@ using namespace nt;
 class echo: public HttpLogicService
 {
 public:
-	virtual void Process(HttpRequest* request, HttpResponse* response)
-	{		
-		const std::string& req = request->GetQueryString();
-		
-		response->SetOutput(GenResp(0, req.c_str()));
-	}
+    virtual void Process(HttpRequest *request, HttpResponse *response)
+    {
+        const std::string &req = request->GetQueryString();
+
+        response->SetOutput(GenResp(0, req.c_str()));
+    }
 };
 NT_RequestMapping(echo, "/cgi/echo")

@@ -8,32 +8,32 @@ namespace nt
 class CTime
 {
 public:
-	CTime()
-	{
-		gettimeofday(&m_tTimePrev, NULL);
-	}
+    CTime()
+    {
+        gettimeofday(&m_tTimePrev, NULL);
+    }
 
-	~CTime(){}
+    ~CTime() {}
 
-	/**
-		@return run time, in milli-second (ms)
-	*/
-	int getFuncRunTime()
-	{
-		struct timeval tNow;
+    /**
+    	@return run time, in milli-second (ms)
+    */
+    int getFuncRunTime()
+    {
+        struct timeval tNow;
 
-		int septime = 0;
+        int septime = 0;
 
-		gettimeofday( &tNow, NULL);
-		septime = 1000000 * ( tNow.tv_sec - m_tTimePrev.tv_sec ) + tNow.tv_usec - m_tTimePrev.tv_usec;
-		septime /= 1000;
-		memmove( &m_tTimePrev, &tNow, sizeof(struct timeval) );
+        gettimeofday( &tNow, NULL);
+        septime = 1000000 * ( tNow.tv_sec - m_tTimePrev.tv_sec ) + tNow.tv_usec - m_tTimePrev.tv_usec;
+        septime /= 1000;
+        memmove( &m_tTimePrev, &tNow, sizeof(struct timeval) );
 
-		return septime;
-	}
+        return septime;
+    }
 
 private:
-	timeval m_tTimePrev;
+    timeval m_tTimePrev;
 };
 
 }// namespace nt

@@ -36,13 +36,13 @@ void ThreadPool::start(int numThreads)
     }
     _running = true;
 
-    for(int i = 0;i < numThreads;++i)
+    for(int i = 0; i < numThreads; ++i)
     {
-	#ifdef WITH_BOOST
-		_threads.create_thread(boost::bind(&ThreadPool::runInThread,this));
-	#else
-		_threads.push_back(std::thread(std::bind(&ThreadPool::runInThread,this)));
-	#endif
+#ifdef WITH_BOOST
+        _threads.create_thread(boost::bind(&ThreadPool::runInThread, this));
+#else
+        _threads.push_back(std::thread(std::bind(&ThreadPool::runInThread, this)));
+#endif
     }
 }
 
@@ -55,15 +55,15 @@ void ThreadPool::stop()
     }
 
 #ifdef WITH_BOOST
-	_threads.join_all();
+    _threads.join_all();
 #else
-	for(int i = 0;i < numThreads;++i)
+    for(int i = 0; i < numThreads; ++i)
     {
-		if (_threads[i].joinable())
-		{
-			_threads[i].join();
-		}
-	}
+        if (_threads[i].joinable())
+        {
+            _threads[i].join();
+        }
+    }
 #endif
 }
 
@@ -128,7 +128,7 @@ void ThreadPool::runInThread()
             }
         }
     }
-    catch (const std::exception& ex)
+    catch (const std::exception &ex)
     {
         fprintf(stderr, "exception caught in ThreadPool %s\n", _name.c_str());
         fprintf(stderr, "reason: %s\n", ex.what());

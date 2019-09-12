@@ -9,13 +9,13 @@ namespace nt
 class HttpRespHelper
 {
 public:
-	HttpRespHelper(SharedHttpOutput_t output);
-	~HttpRespHelper();
+    HttpRespHelper(SharedHttpOutput_t output);
+    ~HttpRespHelper();
 
-	void CreateHeader(std::string& header);
+    void CreateHeader(std::string &header);
 
 private:
-	SharedHttpOutput_t m_output;
+    SharedHttpOutput_t m_output;
 };
 
 };

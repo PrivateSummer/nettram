@@ -3,7 +3,7 @@
 #include <string>
 #include <stdexcept>
 
-class ServerException : public std::runtime_error 
+class ServerException : public std::runtime_error
 {
 public:
 

@@ -23,48 +23,48 @@ namespace nt
 class ThreadMutex
 {
 private:  // noncopyable
-	ThreadMutex( const ThreadMutex& );
-	ThreadMutex& operator=( const ThreadMutex& );
+    ThreadMutex( const ThreadMutex & );
+    ThreadMutex &operator=( const ThreadMutex & );
 
 public:
-	ThreadMutex()
-	{
+    ThreadMutex()
+    {
 #ifdef _MSC_VER
-		m_threadParameter = CreateMutex(NULL, FALSE, NULL);
+        m_threadParameter = CreateMutex(NULL, FALSE, NULL);
 #else
-		pthread_mutex_init(&m_mutex,NULL);
+        pthread_mutex_init(&m_mutex, NULL);
 #endif
-	}
-	~ThreadMutex()
-	{
+    }
+    ~ThreadMutex()
+    {
 #ifdef _MSC_VER
-		CloseHandle(m_threadParameter);
+        CloseHandle(m_threadParameter);
 #else
-		pthread_mutex_destroy( &m_mutex );
+        pthread_mutex_destroy( &m_mutex );
 #endif
-	}
-	void lock()
-	{
+    }
+    void lock()
+    {
 #ifdef _MSC_VER
-		WaitForSingleObject(m_threadParameter, INFINITE);
+        WaitForSingleObject(m_threadParameter, INFINITE);
 #else
-		pthread_mutex_lock(&m_mutex);
+        pthread_mutex_lock(&m_mutex);
 #endif
-	}
-	void unlock()
-	{
+    }
+    void unlock()
+    {
 #ifdef _MSC_VER
-		ReleaseMutex(m_threadParameter);
+        ReleaseMutex(m_threadParameter);
 #else
-		pthread_mutex_unlock(&m_mutex);
+        pthread_mutex_unlock(&m_mutex);
 #endif
-	}
+    }
 
 private:
 #ifdef _MSC_VER
-	HANDLE  m_threadParameter;
+    HANDLE  m_threadParameter;
 #else
-	pthread_mutex_t m_mutex;
+    pthread_mutex_t m_mutex;
 #endif
 };
 
@@ -72,59 +72,59 @@ template <typename MutexType>
 class ScopedLock
 {
 private:  // noncopyable
-	ScopedLock( const ScopedLock& );
-	ScopedLock& operator=( const ScopedLock& );
+    ScopedLock( const ScopedLock & );
+    ScopedLock &operator=( const ScopedLock & );
 
 public:
-	ScopedLock(MutexType & threadlock)
-		: m_mutex(&threadlock), isLocked(false)
-	{
-		lock();
-	}
+    ScopedLock(MutexType &threadlock)
+        : m_mutex(&threadlock), isLocked(false)
+    {
+        lock();
+    }
 
-	~ScopedLock()
-	{
-		if (ownsLock())
-		{
-			m_mutex->unlock();
-		}
-	}
+    ~ScopedLock()
+    {
+        if (ownsLock())
+        {
+            m_mutex->unlock();
+        }
+    }
 
-	void lock()
-	{
-		if (m_mutex == 0)
-		{
-			return;
-		}
-		if (ownsLock())
-		{
-			return;
-		}
-		m_mutex->lock();
-		isLocked = true;
-	}
+    void lock()
+    {
+        if (m_mutex == 0)
+        {
+            return;
+        }
+        if (ownsLock())
+        {
+            return;
+        }
+        m_mutex->lock();
+        isLocked = true;
+    }
 
-	void unlock()
-	{
-		if (m_mutex == 0)
-		{
-			return;
-		}
-		if (!ownsLock())
-		{
-			return;
-		}
-		m_mutex->unlock();
-		isLocked = false;
-	}
+    void unlock()
+    {
+        if (m_mutex == 0)
+        {
+            return;
+        }
+        if (!ownsLock())
+        {
+            return;
+        }
+        m_mutex->unlock();
+        isLocked = false;
+    }
 protected:
-	bool ownsLock() const
-	{
-		return isLocked;
-	}
+    bool ownsLock() const
+    {
+        return isLocked;
+    }
 private:
-	MutexType *m_mutex;
-	bool isLocked;
+    MutexType *m_mutex;
+    bool isLocked;
 };
 
 } //namespace nt

@@ -10,14 +10,14 @@ struct ActionData
 {
     int req;
     int resp;
-	std::string uri;
-	int forbidden;
+    std::string uri;
+    int forbidden;
 };
 
 struct InterceptorData
 {
-	std::vector<std::string> path;
-	std::string interceptor;
+    std::vector<std::string> path;
+    std::string interceptor;
 };
 
 }

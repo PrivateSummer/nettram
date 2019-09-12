@@ -8,11 +8,11 @@ namespace nt
 class LogicService
 {
 public:
-    virtual void Init(){};
+    virtual void Init() {};
 
     virtual const char *ServiceName() const = 0;
-    
-    virtual ~LogicService(){};
+
+    virtual ~LogicService() {};
 };
 
 }
