@@ -1,0 +1,54 @@
+cmake_minimum_required(VERSION 3.0)
+
+#set(BOOST_INCLUDE_DIR "/xx/boost_1_55_0")
+#set(BOOST_LIB_DIR "/xx/boost_1_55_0/stage/lib")
+
+include_directories(${BOOST_INCLUDE_DIR})
+
+include_directories(${PRO_ROOT}/ntlib/src)
+include_directories(${PRO_ROOT}/ntlib/src/convert)
+include_directories(${PRO_ROOT}/ntlib/src/rapidxml)
+include_directories(${PRO_ROOT}/ntlib/src/simpleLog)
+include_directories(${PRO_ROOT}/ntlib/src/use_inc)
+include_directories(${PRO_ROOT}/ntlib/src/string)
+
+#设置cpp文件的编译参数
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DWITH_BOOST")
+
+OPTION(WITH_BOOST "use boost" OFF) # Disabled by default
+
+if(CMAKE_COMPILER_IS_GNUCXX)
+   execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion OUTPUT_VARIABLE GCC_VERSION)
+   if (GCC_VERSION VERSION_GREATER 4.7 OR GCC_VERSION VERSION_EQUAL 4.7)
+        message(STATUS "C++11 activated.")
+        add_definitions("-std=gnu++11")
+   elseif(GCC_VERSION VERSION_GREATER 4.3 OR GCC_VERSION VERSION_EQUAL 4.3)
+        message(WARNING "C++0x activated. If you get any errors update to a compiler which fully supports C++11")
+        add_definitions("-std=gnu++0x")
+   else ()
+		if(WITH_BOOST)
+		    add_definitions(-DWITH_BOOST)
+		else(WITH_BOOST)
+		    message(FATAL_ERROR "C++11 needed. Therefore a gcc compiler with a version higher than 4.3 is needed, or set cmake command '-DWITH_BOOST=ON' please.")
+		endif(WITH_BOOST)
+   endif()
+else(CMAKE_COMPILER_IS_GNUCXX)
+   add_definitions("-std=c++0x") 
+endif(CMAKE_COMPILER_IS_GNUCXX)
+
+
+if(WITH_BOOST)
+    add_definitions(-DWITH_BOOST)
+endif(WITH_BOOST)
+
+#显示编译过程
+set(CMAKE_VERBOSE_MAKEFILE ON)
+
+add_definitions(
+-D_REENTRANT
+)
+
+SET(CMAKE_BUILD_TYPE "Debug")
+SET(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g")
+SET(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O2 -Wall -g")
+

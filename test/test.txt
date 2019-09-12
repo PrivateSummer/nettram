@@ -1,0 +1,1 @@
+wrk -t8 -c200 -d30s "http://192.168.217.128:8001/cgi/echo?a=aaabbb"  -s echo.lua

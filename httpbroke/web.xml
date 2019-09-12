@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+  <server>
+    <ip>127.0.0.1</ip>
+    <port>8001</port>
+    <buf_size>1024</buf_size>
+    <max_events>512</max_events>
+    <listenq>64</listenq>
+    <data_queue_max_size>1000000</data_queue_max_size>
+    <proc_size>2</proc_size>
+    <queue_size>1000</queue_size> 
+    <max_data_len>81920</max_data_len>
+  </server>
+</config>
+
