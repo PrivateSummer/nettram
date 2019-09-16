@@ -20,13 +20,12 @@ HttpResponse::~HttpResponse()
 
 const std::string *HttpResponse::GetHeader(const std::string &key) const
 {
-    for (size_t i = 0; i < m_headers.size(); i++)
+    const HttpResponse::header *h = Header(key);
+    if(h)
     {
-        if (strcasecmp(m_headers[i].key.c_str(), key.c_str()) == 0)
-        {
-            return &m_headers[i].value;
-        }
+        return &(h->value);
     }
+
     return NULL;
 }
 
@@ -94,6 +93,23 @@ void HttpResponse::SendRedirect(const std::string &url)
 {
     SetStatus(HTTP_FOUND);
     SetHeader("Location", url);
+}
+
+void HttpResponse::SetContentType(const std::string &contentType)
+{
+    SetHeader("Content-Type", contentType);
+}
+
+const HttpResponse::header *HttpResponse::Header(const std::string &key) const
+{
+    for (size_t i = 0; i < m_headers.size(); i++)
+    {
+        if (strcasecmp(m_headers[i].key.c_str(), key.c_str()) == 0)
+        {
+            return &m_headers[i];
+        }
+    }
+    return NULL;
 }
 
 }

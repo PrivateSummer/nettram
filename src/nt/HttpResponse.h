@@ -25,13 +25,30 @@ public:
     };
 
     template<typename T>
-    void SetHeader(const std::string &key, const T &value)
+    void AddHeader(const std::string &key, const T &value)
     {
         std::stringstream ss;
         ss << value;
         header h = { key, ss.str() };
 
         m_headers.push_back(h);
+    }
+
+    template<typename T>
+    void SetHeader(const std::string &key, const T &value)
+    {
+        std::stringstream ss;
+        ss << value;
+        HttpResponse::header *h = const_cast<HttpResponse::header *>(Header(key));
+        if(h)
+        {
+            h->value = ss.str();
+        }
+        else
+        {
+            header h = { key, ss.str() };
+            m_headers.push_back(h);
+        } 
     }
 
     const std::string *GetHeader(const std::string &key) const;
@@ -61,6 +78,10 @@ public:
     std::string GetVersion() const;
     
     void SendRedirect(const std::string &url);
+    
+    void SetContentType(const std::string &contentType);
+private:
+    const HttpResponse::header *Header(const std::string &key) const;
 private:
     std::vector<HttpResponse::header> m_headers;
     int m_contentLength;
