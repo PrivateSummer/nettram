@@ -6,6 +6,7 @@
 #include "ServerException.h"
 #include "ServerConfig.h"
 #include "SessionSystem.h"
+#include "ScopedDestructor.h"
 
 using namespace nt;
 
@@ -20,9 +21,7 @@ HttpServerImpl::~HttpServerImpl()
     for (; service_itr != m_service_mapper.end(); ++service_itr)
 
     {
-
         delete service_itr->second;
-
     }
 
     m_service_mapper.clear();
@@ -96,6 +95,11 @@ int HttpServerImpl::init()
     return 0;
 }
 
+static void DeleteService(HttpLogicService *service)
+{
+    delete service;
+}
+
 void HttpServerImpl::service(nt::SharedHttpInput_t request, nt::SharedHttpOutput_t response)
 {
     ServiceFactory *serviceFactory = NULL;
@@ -111,7 +115,6 @@ void HttpServerImpl::service(nt::SharedHttpInput_t request, nt::SharedHttpOutput
     if (action_itr != m_action_config.GetUriMapper().end())
 
     {
-
         int forbidden = action_itr->second.forbidden;
         if(forbidden == 1)
         {
@@ -121,7 +124,6 @@ void HttpServerImpl::service(nt::SharedHttpInput_t request, nt::SharedHttpOutput
             err_log("403 forbidden uri:%s", uri.c_str());
             return;
         }
-
     }
 
 
@@ -135,7 +137,6 @@ void HttpServerImpl::service(nt::SharedHttpInput_t request, nt::SharedHttpOutput
     if (serviceFactory == NULL)
 
     {
-
         response->GetOutputImpl()->append("not found");
 
         response->SetHeader("Content-Length", response->GetOutput().size());
@@ -147,13 +148,11 @@ void HttpServerImpl::service(nt::SharedHttpInput_t request, nt::SharedHttpOutput
         err_log("not found uri:%s", uri.c_str());
 
         return;
-
     }
-
-
 
     HttpLogicService *service = static_cast<HttpLogicService *>(serviceFactory->Create());
 
+    ScopedDestructorFunc<HttpLogicService *> scoped(&DeleteService, service);
 
     response->SetStatus(HTTP_OK);
 
@@ -179,11 +178,9 @@ int HttpServerImpl::AddServiceFactory(nt::ServiceFactory *factory)
     if (m_service_mapper.find(url) != m_service_mapper.end())
 
     {
-
         printf("AddServiceFactory service(%s) existed\n", url.c_str());
 
         return -1;
-
     }
 
     m_service_mapper.insert(std::make_pair(url, factory));
