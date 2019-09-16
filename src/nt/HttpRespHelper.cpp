@@ -22,7 +22,7 @@ struct CodeToInfo
 
 void HttpRespHelper::CreateHeader(std::string &header)
 {
-    CodeToInfo codeToInfo[] =
+    static const CodeToInfo codeToInfo[] =
     {
         {HTTP_SWITCHING_PROTOCOLS, "Switching Protocols"},
         {HTTP_OK, "OK"},
@@ -43,7 +43,7 @@ void HttpRespHelper::CreateHeader(std::string &header)
 
     for (int i = 0; ; ++i)
     {
-        CodeToInfo *iter = &(codeToInfo[i]);
+        const CodeToInfo *iter = &(codeToInfo[i]);
         if (NULL == iter->info) break;
 
         if (m_output->GetStatus() == iter->code)
