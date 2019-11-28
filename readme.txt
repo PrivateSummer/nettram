@@ -21,6 +21,5 @@ make
 
 #run example
 
-cd httpbroke
-./httpbroke
-
+cd httpdemo
+nohup httpdemo >/dev/null 2>&1 &
