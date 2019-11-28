@@ -1,13 +1,13 @@
 <config>
     <!-- 启用或禁止接口 forbiddet="1" 代表禁止该url请求, "0"代表启用, 默认启用
-    <action_mapper uri="/cgi/echo" forbidden="1"> </action_mapper>
+    <action_mapper uri="/demo/echo" forbidden="1"> </action_mapper>
     -->
 
     <!--拦截器 interceptors可包含多个interceptor -->
     <interceptors>
         <!-- 严格的正则表达式匹配 interceptor可包含多个mapping -->
         <interceptor>
-            <mapping path="/cgi/.*"/>
+            <mapping path="/demo/.*"/>
             <class name="LoginInterceptor"></class>
         </interceptor>
     </interceptors>

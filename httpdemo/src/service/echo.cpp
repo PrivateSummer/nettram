@@ -15,4 +15,4 @@ public:
         response->SetOutput(req.c_str());
     }
 };
-NT_RequestMapping(echo, "/cgi/echo")
+NT_RequestMapping(echo, "/demo/echo")

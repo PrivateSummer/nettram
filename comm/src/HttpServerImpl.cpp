@@ -201,7 +201,6 @@ int HttpServerImpl::AddInterceptorMapper(const std::string &name, HandlerInterce
         return -1;
     }
     m_interceptor_mapper.insert(std::make_pair(name, interceptor));
-    printf("add_interceptor_mapper name:%s\n", name.c_str());
     return 0;
 }
 
