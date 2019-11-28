@@ -2,7 +2,6 @@
 #include <assert.h>
 #include <string.h>
 #include "log.h"
-#include "httpbrokecommlogic.h"
 
 using namespace nt;
 
@@ -13,7 +12,7 @@ public:
     {
         const std::string &req = request->GetQueryString();
 
-        response->SetOutput(GenResp(0, req.c_str()));
+        response->SetOutput(req.c_str());
     }
 };
 NT_RequestMapping(echo, "/cgi/echo")

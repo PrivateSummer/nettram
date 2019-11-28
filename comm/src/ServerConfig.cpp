@@ -114,18 +114,24 @@ int ServerConfig::ReadData(const char *file, rapidxml::xml_node<> *root)
     node = server->first_node("read_timeout");
     if(node == NULL)
     {
-        err_log("read(%s): no such node (read_timeout)", file);
-        return 1;
+        warn_log("read(%s): no such node (read_timeout)", file);
+        m_read_timeout = 10;
     }
-    m_read_timeout = atoi(node->value());
+    else
+    {
+        m_read_timeout = atoi(node->value());
+    }
 
     node = server->first_node("write_timeout");
     if(node == NULL)
     {
-        err_log("read(%s): no such node (write_timeout)", file);
-        return 1;
+        warn_log("read(%s): no such node (write_timeout)", file);
+        m_write_timeout = 10;
     }
-    m_write_timeout = atoi(node->value());
+    else
+    {
+        m_write_timeout = atoi(node->value());
+    }
 
     return 0;
 }

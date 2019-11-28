@@ -1,5 +1,5 @@
+#include <vector>
 #include "HandlerInterceptor.h"
-#include "httpbrokecommlogic.h"
 #include "ServiceMapper.h"
 #include "log.h"
 
@@ -27,7 +27,7 @@ public:
         {
             debug_log("not login");
             response->SetStatus(401);
-            response->SetOutput(GenResp(-1, "Unauthorized"));
+            response->SetOutput("Unauthorized");
             return false;
         }
 

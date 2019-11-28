@@ -1,8 +1,9 @@
 #include "ServiceMapper.h"
 #include <assert.h>
+#include <string>
 #include <string.h>
+#include <unistd.h>
 #include "log.h"
-#include "httpbrokecommlogic.h"
 
 using namespace nt;
 
@@ -18,8 +19,8 @@ public:
             HttpSession *session = request->GetSession(false);
             if(session != NULL && (username = session->GetAttribute("username")) != NULL)
             {
-                debug_log("login already, %s", username);
-                response->SetOutput(GenResp(0, "OK"));
+                debug_log("login already, %s", username->c_str());
+                response->SetOutput("OK\n");
                 return;
             }
 
@@ -28,12 +29,12 @@ public:
             if(session)
             {
                 session->SetAttribute("username", req);
-                response->SetOutput(GenResp(0, "OK"));
+                response->SetOutput("OK\n");
                 return;
             }
         }
-
-        response->SetOutput(GenResp(-1, "username or password is wrong"));
+        usleep(20000);
+        response->SetOutput("username or password is wrong\n");
     }
 };
 NT_RequestMapping(login, "/login")
