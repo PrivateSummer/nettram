@@ -63,14 +63,6 @@ int ServerConfig::ReadData(const char *file, rapidxml::xml_node<> *root)
     }
     m_buf_size = atoi(node->value());
 
-    node = server->first_node("max_events");
-    if(node == NULL)
-    {
-        err_log("read(%s): no such node (max_events)", file);
-        return 1;
-    }
-    m_max_events = atoi(node->value());
-
     node = server->first_node("listenq");
     if(node == NULL)
     {
@@ -78,14 +70,6 @@ int ServerConfig::ReadData(const char *file, rapidxml::xml_node<> *root)
         return 1;
     }
     m_listenq = atoi(node->value());
-
-    node = server->first_node("data_queue_max_size");
-    if(node == NULL)
-    {
-        err_log("read(%s): no such node (data_queue_max_size)", file);
-        return 1;
-    }
-    m_data_queue_max_size = atoi(node->value());
 
     node = server->first_node("proc_size");
     if(node == NULL)
@@ -141,10 +125,7 @@ void ServerConfig::ClearAll()
     m_ip.clear();
     m_port = 0;
     m_buf_size = 0;
-    m_max_events = 0;
     m_listenq = 0;
-
-    m_data_queue_max_size = 0;
 
     m_proc_size = 0;
     m_queue_size = 0;
