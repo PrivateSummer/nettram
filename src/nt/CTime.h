@@ -1,6 +1,8 @@
 #pragma once
 
 #include <sys/time.h>
+#include <stdio.h>
+#include <string.h>
 
 namespace nt
 {
